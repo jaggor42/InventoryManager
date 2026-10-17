@@ -145,6 +145,34 @@ def update_quantity(inventory):
 
     print(f"{item['name']} quantity updated to {new_quantity}.")
 
+
+
+def remove_item(inventory):
+    """Remove an inventory item using its displayed number."""
+    if not inventory:
+        print("No inventory items found.")
+        return
+
+    view_inventory(inventory)
+
+    item_input = input("Enter the item number to remove: ").strip()
+
+    if not item_input.isdecimal():
+        print("Invalid item number.")
+        return
+
+    item_number = int(item_input)
+
+    if item_number < 1 or item_number > len(inventory):
+        print("Item number is out of range.")
+        return
+
+    removed_item = inventory.pop(item_number - 1)
+
+    save_inventory(inventory, INVENTORY_FILE)
+
+    print(f"Item removed: {removed_item['name']}")
+
 def main():
     """Run the Inventory Manager menu until the user exits."""
     inventory = load_inventory(INVENTORY_FILE)
@@ -160,10 +188,12 @@ def main():
             add_item(inventory)
         elif choice == "3":
             update_quantity(inventory)
+        elif choice == "4":
+            remove_item(inventory)
         elif choice == "7":
             print("Goodbye!")
             break
-        elif choice in ["4", "5", "6"]:
+        elif choice in ["5", "6"]:
             print("This feature has not been implemented yet.")
         else:
             print("Invalid choice. Please enter a number from 1 to 7.")
