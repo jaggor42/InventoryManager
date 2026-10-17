@@ -173,6 +173,32 @@ def remove_item(inventory):
 
     print(f"Item removed: {removed_item['name']}")
 
+
+
+def search_inventory(inventory):
+    """Search inventory items by name, ignoring capitalization."""
+    search_term = input("Enter an item name to search: ").strip()
+
+    if not search_term:
+        print("Search term cannot be empty.")
+        return
+
+    matches = []
+
+    for item in inventory:
+        if search_term.lower() in item["name"].lower():
+            matches.append(item)
+
+    if not matches:
+        print("No inventory items matched your search.")
+        return
+
+    print("\nSearch Results:")
+
+    for number, item in enumerate(matches, start=1):
+        print(f"{number}. {item['name']} | {item['category']} | Quantity: {item['quantity']}")
+
+
 def main():
     """Run the Inventory Manager menu until the user exits."""
     inventory = load_inventory(INVENTORY_FILE)
@@ -188,12 +214,14 @@ def main():
             add_item(inventory)
         elif choice == "3":
             update_quantity(inventory)
-        elif choice == "4":
+        elif choice == "74":
             remove_item(inventory)
+        elif choice == "5":
+            search_inventory(inventory)
         elif choice == "7":
             print("Goodbye!")
             break
-        elif choice in ["5", "6"]:
+        elif choice in ["6"]:
             print("This feature has not been implemented yet.")
         else:
             print("Invalid choice. Please enter a number from 1 to 7.")
