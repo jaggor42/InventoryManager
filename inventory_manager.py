@@ -46,10 +46,20 @@ def load_inventory(filename):
     return inventory
 
 
+def save_inventory(inventory, filename):
+    """Save all inventory items to a text file."""
+    with open(filename, "w") as file:
+        for item in inventory:
+            name = item["name"]
+            category = item["category"]
+            quantity = item["quantity"]
+
+            file.write(f"{name}|{category}|{quantity}\n")
+
+
 def main():
     """Run the Inventory Manager menu until the user exits."""
     inventory = load_inventory(INVENTORY_FILE)
-    print(inventory)
     
     while True:
         display_menu()
@@ -67,3 +77,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    
