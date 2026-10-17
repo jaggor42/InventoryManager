@@ -173,6 +173,63 @@ def remove_item(inventory):
 
     print(f"Item removed: {removed_item['name']}")
 
+
+
+def search_inventory(inventory):
+    """Search inventory items by name, ignoring capitalization."""
+    search_term = input("Enter an item name to search: ").strip()
+
+    if not search_term:
+        print("Search term cannot be empty.")
+        return
+
+    matches = []
+
+    for item in inventory:
+        if search_term.lower() in item["name"].lower():
+            matches.append(item)
+
+    if not matches:
+        print("No inventory items matched your search.")
+        return
+
+    print("\nSearch Results:")
+
+    for number, item in enumerate(matches, start=1):
+        print(f"{number}. {item['name']} | {item['category']} | Quantity: {item['quantity']}")
+
+
+
+def display_summary(inventory):
+    """Display inventory totals, low-stock items, and category counts."""
+    unique_items = len(inventory)
+    total_quantity = 0
+    low_stock = 0
+    categories = {}
+
+    for item in inventory:
+        total_quantity += item["quantity"]
+
+        if item["quantity"] < 5:
+            low_stock += 1
+
+        category = item["category"].lower()
+
+        if category in categories:
+            categories[category] += 1
+        else:
+            categories[category] = 1
+
+    print("\nInventory Summary")
+    print(f"Unique items: {unique_items}")
+    print(f"Total quantity: {total_quantity}")
+    print(f"Low-stock items: {low_stock}")
+
+    print("\nItems by category:")
+
+    for category, count in categories.items():
+        print(f"{category.title()}: {count}")
+
 def main():
     """Run the Inventory Manager menu until the user exits."""
     inventory = load_inventory(INVENTORY_FILE)
@@ -190,16 +247,16 @@ def main():
             update_quantity(inventory)
         elif choice == "4":
             remove_item(inventory)
+        elif choice == "5":
+            search_inventory(inventory)
+        elif choice == "6":
+            display_summary(inventory)
         elif choice == "7":
             print("Goodbye!")
             break
-        elif choice in ["5", "6"]:
-            print("This feature has not been implemented yet.")
         else:
             print("Invalid choice. Please enter a number from 1 to 7.")
 
 
 if __name__ == "__main__":
     main()
-
-    
