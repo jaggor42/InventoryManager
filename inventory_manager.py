@@ -20,8 +20,37 @@ def display_menu():
     print("7. Exit")
 
 
+def load_inventory(filename):
+    """Load inventory items from a text file into a list of dictionaries."""
+    inventory = []
+
+    try:
+        with open(filename, "r") as file:
+            for line in file:
+                line = line.strip()
+
+                if line:
+                    name, category, quantity = line.split("|")
+
+                    item = {
+                        "name": name,
+                        "category": category,
+                        "quantity": int(quantity)
+                    }
+
+                    inventory.append(item)
+
+    except FileNotFoundError:
+        return []
+
+    return inventory
+
+
 def main():
     """Run the Inventory Manager menu until the user exits."""
+    inventory = load_inventory(INVENTORY_FILE)
+    print(inventory)
+    
     while True:
         display_menu()
 
