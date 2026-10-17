@@ -68,6 +68,46 @@ def view_inventory(inventory):
     for number, item in enumerate(inventory, start=1):
         print(f"{number}. {item['name']} | {item['category']} | Quantity: {item['quantity']}")
 
+
+
+def add_item(inventory):
+    """Add a new inventory item after validating user input."""
+    name = input("Enter the item name: ").strip()
+
+    if not name or "|" in name:
+        print("Invalid item name.")
+        return
+
+    for item in inventory:
+        if item["name"].lower() == name.lower():
+            print("An item with this name already exists.")
+            return
+
+    category = input("Enter the category: ").strip()
+
+    if not category or "|" in category:
+        print("Invalid category.")
+        return
+
+    quantity_input = input("Enter the quantity: ").strip()
+
+    if not quantity_input.isdecimal():
+        print("Quantity must be a nonnegative whole number.")
+        return
+
+    quantity = int(quantity_input)
+
+    item = {
+        "name": name,
+        "category": category,
+        "quantity": quantity
+    }
+
+    inventory.append(item)
+    save_inventory(inventory, INVENTORY_FILE)
+
+    print("Item added successfully.")
+
 def main():
     """Run the Inventory Manager menu until the user exits."""
     inventory = load_inventory(INVENTORY_FILE)
@@ -79,10 +119,12 @@ def main():
 
         if choice == "1":
             view_inventory(inventory)
+        elif choice == "2":
+            add_item(inventory)
         elif choice == "7":
             print("Goodbye!")
             break
-        elif choice in ["2", "3", "4", "5", "6"]:
+        elif choice in ["3", "4", "5", "6"]:
             print("This feature has not been implemented yet.")
         else:
             print("Invalid choice. Please enter a number from 1 to 7.")
